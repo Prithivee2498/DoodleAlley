@@ -102,7 +102,7 @@ export default function App() {
         <AdminDashboard onLogout={handleAdminLogout} />
       )}
 
-      <Toaster position="top-right" />
+      <Toaster position="top-right" style={{ fontFamily: 'Spline Sans, sans-serif', color: 'var(--navy)' }} />
     </>
   );
 }

@@ -168,7 +168,7 @@ export function ProductDetail({ productId, onBack, onPlaceOrder }: ProductDetail
             <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
             
             <p className="text-3xl font-bold mb-6" style={{ color: '#c7b8ea' }}>
-              ${product.price}
+              ₹{product.price}
             </p>
 
             <div className="mb-8">

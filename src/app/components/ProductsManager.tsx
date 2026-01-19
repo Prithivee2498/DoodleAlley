@@ -230,7 +230,7 @@ export function ProductsManager() {
                   {product.description}
                 </p>
                 <p className="text-lg font-bold mb-2" style={{ color: '#7c5db8' }}>
-                  ${product.price}
+                  ₹{product.price}
                 </p>
                 {product.category && (
                   <p className="text-sm text-gray-500 mb-3">
@@ -286,7 +286,7 @@ export function ProductsManager() {
             </div>
 
             <div>
-              <Label htmlFor="price">Price (USD) *</Label>
+              <Label htmlFor="price">Price (INR) *</Label>
               <Input
                 id="price"
                 type="number"
