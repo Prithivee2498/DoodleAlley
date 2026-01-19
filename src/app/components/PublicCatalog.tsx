@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
+import  Loader  from '@/app/components/ui/loader';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { projectId, publicAnonKey } from '/utils/supabase/info';
+import  MainLogo  from '../../assets/mainlogo';
 
 interface Product {
   id: string;
@@ -88,20 +90,27 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading artworks...</div>
+        <Loader />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fffdf9]">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-4xl font-bold text-center mb-2" style={{ color: '#c7b8ea' }}>
+      <header className="border-b border-gray-200 bg-[#fffdf9] sticky top-0 z-10" style={{display:'flex'}}>
+      <MainLogo />
+    
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+          <h1
+            className="text-5xl font-bold mb-3 tracking-tight text-[#2c3e50] font-display"
+            style={{ fontFamily: 'Playfair Display, serif' }}
+          >
             Doodle Alley
           </h1>
-          <p className="text-center text-gray-600">Handcrafted art & doodles with love</p>
+          <p className="text-gray-500 font-sans tracking-wide text-lg">
+            Handcrafted art & doodles with love
+          </p>
         </div>
       </header>
 
@@ -136,65 +145,75 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
 
         {/* Products Grid */}
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No artworks found</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
-              >
-                {/* Product Image */}
-                <div className="aspect-square overflow-hidden bg-gray-50">
-                  {product.images && product.images.length > 0 ? (
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      No Image
-                    </div>
-                  )}
-                </div>
+        <div className="text-center py-16">
+          <p className="text-lg" style={{ color: '#2C3E50' }}>No artworks found</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="group rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border"
+              style={{ backgroundColor: '#FFFDF9', borderColor: '#FFDAB9' }}
+            >
+              {/* Product Image */}
+              <div className="aspect-square overflow-hidden" style={{ backgroundColor: '#FFDAB9' }}>
+                {product.images && product.images.length > 0 ? (
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center" style={{ color: '#2C3E50' }}>
+                    No Image
+                  </div>
+                )}
+              </div>
 
                 {/* Product Info */}
                 <div className="p-5">
                   <div className="mb-3">
-                    {product.category && (
+                    {product.category ? (
                       <span
                         className="text-xs font-medium px-2 py-1 rounded-full"
-                        style={{ backgroundColor: '#e6dff7', color: '#7c5db8' }}
+                        style={{ backgroundColor: '#ffdab9', color: '#2c3e50' }}
                       >
                         {product.category}
                       </span>
-                    )}
+                    ): <span className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: '#FFDAB9', color: '#2C3E50' }}>Uncategorized</span>}
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <p className="text-2xl font-bold mb-4" style={{ color: '#c7b8ea' }}>
-                    ${product.price}
-                  </p>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#2C3E50' }}>{product.name}</h3>
+                <p className="text-sm mb-3 line-clamp-2" style={{ color: '#2C3E50' }}>
+                  {product.description}
+                </p>
+                <p className="text-2xl font-bold mb-4" style={{ color: '#2C3E50' }}>
+                  ₹{product.price}
+                </p>
 
                   {/* Action Buttons */}
                   <div className="flex gap-2">
                     <Button
-                      onClick={() => onViewProduct(product.id)}
-                      variant="outline"
-                      className="flex-1 border-[#c7b8ea] text-[#7c5db8] hover:bg-[#e6dff7]"
-                    >
+                    onClick={() => onViewProduct(product.id)}
+                    variant="outline"
+                    className="flex-1"
+                    style={{
+                      borderColor: '#FFDAB9',
+                      color: '#2C3E50',
+                      backgroundColor: '#FFFDF9',
+                    }}
+                  >
                       View
                     </Button>
-                    <Button
-                      onClick={() => onPlaceOrder(product.id)}
-                      className="flex-1"
-                      style={{ backgroundColor: '#b8e6d5', color: '#2d5f4f' }}
-                    >
+                     <Button
+                    onClick={() => onPlaceOrder(product.id)}
+                    className="flex-1"
+                    style={{
+                      backgroundColor: '#FFDAB9',
+                      color: '#2C3E50',
+                      border: '1px solid #FFDAB9',
+                    }}
+                  >
                       Place Order
                     </Button>
                   </div>

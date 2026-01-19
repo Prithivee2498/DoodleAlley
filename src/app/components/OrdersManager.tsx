@@ -147,7 +147,7 @@ export function OrdersManager() {
                   <div className="mt-3">
                     <p className="font-semibold">{order.productName}</p>
                     <p className="text-sm text-gray-600">
-                      ${order.productPrice} × {order.quantity} = $
+                      ₹{order.productPrice} × {order.quantity} = ₹
                       {order.totalPrice.toFixed(2)}
                     </p>
                   </div>

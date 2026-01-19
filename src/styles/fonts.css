@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');
+
+body {
+	font-family: 'Spline Sans', sans-serif;
+	color: #2C3E50;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Spline Sans', sans-serif;
+	font-weight: 700;
+}
