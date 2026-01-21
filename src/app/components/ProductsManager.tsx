@@ -174,7 +174,7 @@ export function ProductsManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-lg">Loading products...</div>
+        <div className="text-lg text-[#1E293B]">Loading products...</div>
       </div>
     );
   }
@@ -182,11 +182,10 @@ export function ProductsManager() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Products</h2>
+        <h2 className="text-2xl font-bold text-[#1E293B]">Products</h2>
         <Button
           onClick={openCreateDialog}
-          className="flex items-center gap-2"
-          style={{ backgroundColor: '#c7b8ea', color: 'white' }}
+          className="flex items-center gap-2 bg-[#D97706] text-white hover:bg-[#b45309] shadow-md"
         >
           <Plus className="w-4 h-4" />
           Add Product
@@ -194,18 +193,18 @@ export function ProductsManager() {
       </div>
 
       {products.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-500">No products yet. Create your first product!</p>
+        <div className="text-center py-12 bg-white rounded-2xl border border-orange-100">
+          <p className="text-[#1E293B]/60">No products yet. Create your first product!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden"
             >
               {product.images && product.images.length > 0 && (
-                <div className="aspect-square bg-gray-50">
+                <div className="aspect-square bg-[#FFF7ED]">
                   <img
                     src={product.images[0]}
                     alt={product.name}
@@ -215,7 +214,7 @@ export function ProductsManager() {
               )}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold text-lg">{product.name}</h3>
+                  <h3 className="font-semibold text-lg text-[#1E293B]">{product.name}</h3>
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
                       product.isActive
@@ -226,14 +225,14 @@ export function ProductsManager() {
                     {product.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                <p className="text-sm text-[#1E293B]/70 mb-2 line-clamp-2">
                   {product.description}
                 </p>
-                <p className="text-lg font-bold mb-2" style={{ color: '#7c5db8' }}>
+                <p className="text-lg font-bold mb-2 text-[#D97706]">
                   ₹{product.price}
                 </p>
                 {product.category && (
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-[#1E293B]/60 mb-3">
                     Category: {product.category}
                   </p>
                 )}
@@ -242,7 +241,7 @@ export function ProductsManager() {
                     onClick={() => openEditDialog(product)}
                     variant="outline"
                     size="sm"
-                    className="flex-1 flex items-center gap-1"
+                    className="flex-1 flex items-center gap-1 border-orange-200 hover:bg-orange-50"
                   >
                     <Edit className="w-3 h-3" />
                     Edit
@@ -251,7 +250,7 @@ export function ProductsManager() {
                     onClick={() => handleDelete(product.id)}
                     variant="outline"
                     size="sm"
-                    className="flex items-center gap-1 text-red-600 hover:bg-red-50"
+                    className="flex items-center gap-1 text-red-600 hover:bg-red-50 border-red-200"
                   >
                     <Trash2 className="w-3 h-3" />
                     Delete
@@ -265,28 +264,28 @@ export function ProductsManager() {
 
       {/* Product Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-[#1E293B]">
               {editingProduct ? 'Edit Product' : 'Create New Product'}
             </DialogTitle>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="name">Product Name *</Label>
+              <Label htmlFor="name" className="text-[#1E293B]">Product Name *</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 placeholder="e.g., Custom Portrait Doodle"
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <div>
-              <Label htmlFor="price">Price (INR) *</Label>
+              <Label htmlFor="price" className="text-[#1E293B]">Price (USD) *</Label>
               <Input
                 id="price"
                 type="number"
@@ -295,23 +294,23 @@ export function ProductsManager() {
                 onChange={(e) => setPrice(e.target.value)}
                 required
                 placeholder="29.99"
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <div>
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category" className="text-[#1E293B]">Category</Label>
               <Input
                 id="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 placeholder="e.g., Portraits, Landscapes, Abstract"
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <div>
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description" className="text-[#1E293B]">Description *</Label>
               <Textarea
                 id="description"
                 value={description}
@@ -319,21 +318,21 @@ export function ProductsManager() {
                 required
                 placeholder="Describe your artwork..."
                 rows={4}
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <div>
-              <Label htmlFor="imageUrls">Image URLs (one per line)</Label>
+              <Label htmlFor="imageUrls" className="text-[#1E293B]">Image URLs (one per line)</Label>
               <Textarea
                 id="imageUrls"
                 value={imageUrls}
                 onChange={(e) => setImageUrls(e.target.value)}
                 placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
                 rows={4}
-                className="mt-1 font-mono text-sm"
+                className="mt-1 font-mono text-sm border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#1E293B]/60 mt-1">
                 Enter each image URL on a new line
               </p>
             </div>
@@ -344,7 +343,7 @@ export function ProductsManager() {
                 checked={isActive}
                 onCheckedChange={setIsActive}
               />
-              <Label htmlFor="isActive">Active (visible to customers)</Label>
+              <Label htmlFor="isActive" className="text-[#1E293B]">Active (visible to customers)</Label>
             </div>
 
             <div className="flex gap-2 pt-4">
@@ -352,14 +351,13 @@ export function ProductsManager() {
                 type="button"
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
-                className="flex-1"
+                className="flex-1 border-orange-200 hover:bg-orange-50"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
-                style={{ backgroundColor: '#c7b8ea', color: 'white' }}
+                className="flex-1 bg-[#D97706] text-white hover:bg-[#b45309] shadow-md"
               >
                 {editingProduct ? 'Update Product' : 'Create Product'}
               </Button>

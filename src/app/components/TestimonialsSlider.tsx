@@ -50,70 +50,55 @@ export function TestimonialsSlider() {
     );
   };
 
-return (
-  <div className="py-12 px-4" style={{ backgroundColor: '#FFFDF9' }}>
-    <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-8" style={{ color: '#2C3E50' }}>
-        What Our Customers Say
-      </h2>
-      
-      <div className="relative">
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={prev}
-            className="w-10 h-10 rounded-full"
-            style={{
-              backgroundColor: '#FFDAB9',
-              color: '#2C3E50',
-              boxShadow: '0 2px 8px rgba(44,62,80,0.08)',
-              transition: 'background 0.2s',
-            }}
-          >
-            <ChevronLeft className="w-5 h-5" style={{ color: '#2C3E50' }} />
-          </button>
+  return (
+    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 to-orange-100/30">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-12 text-[#1E293B]">
+          What Our Customers Say
+        </h2>
+        
+        <div className="relative">
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={prev}
+              className="w-12 h-12 rounded-full bg-white hover:bg-orange-50 flex items-center justify-center shadow-lg transition-all flex-shrink-0 text-[#1E293B] hover:scale-110 border border-orange-100"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-          <div className="flex-1 text-center px-4 py-8">
-            <p className="text-xl md:text-2xl font-medium mb-4" style={{ color: '#2C3E50' }}>
-              "{testimonials[currentIndex].text}"
-            </p>
-            <p style={{ color: '#2C3E50' }}>
-              — {testimonials[currentIndex].author}
-            </p>
+            <div className="flex-1 text-center px-4 py-10 bg-white rounded-3xl shadow-md border border-orange-100">
+              <p className="text-xl md:text-2xl font-medium mb-4 text-[#1E293B]">
+                "{testimonials[currentIndex].text}"
+              </p>
+              <p className="text-[#D97706] font-semibold">
+                — {testimonials[currentIndex].author}
+              </p>
+            </div>
+
+            <button
+              onClick={next}
+              className="w-12 h-12 rounded-full bg-white hover:bg-orange-50 flex items-center justify-center shadow-lg transition-all flex-shrink-0 text-[#1E293B] hover:scale-110 border border-orange-100"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            onClick={next}
-            className="w-10 h-10 rounded-full"
-            style={{
-              backgroundColor: '#FFDAB9',
-              color: '#2C3E50',
-              boxShadow: '0 2px 8px rgba(44,62,80,0.08)',
-              transition: 'background 0.2s',
-            }}
-          >
-            <ChevronRight className="w-5 h-5" style={{ color: '#2C3E50' }} />
-          </button>
-        </div>
-
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-2 mt-6">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className="rounded-full transition-all"
-              style={{
-                width: index === currentIndex ? 32 : 8,
-                height: 8,
-                backgroundColor: index === currentIndex ? '#FFDAB9' : '#c7b8ea',
-                border: index === currentIndex ? '2px solid #2C3E50' : 'none',
-              }}
-            />
-          ))}
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`h-2 rounded-full transition-all ${
+                  index === currentIndex
+                    ? 'bg-[#D97706] w-8 shadow-sm'
+                    : 'bg-orange-200 w-2'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 }

@@ -16,21 +16,21 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#FFFDF9]">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white border-b border-orange-100/50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold" style={{ color: '#7c5db8' }}>
+              <h1 className="text-2xl font-bold text-[#D97706]">
                 Doodle Alley Admin
               </h1>
-              <p className="text-sm text-gray-600">Manage your artworks and orders</p>
+              <p className="text-sm text-[#1E293B]/70">Manage your artworks and orders</p>
             </div>
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-orange-200 hover:bg-orange-50 text-[#1E293B]"
             >
               <LogOut className="w-4 h-4" />
               Logout
@@ -39,14 +39,14 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-8 py-8">
         <Tabs defaultValue="products" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
-            <TabsTrigger value="products" className="flex items-center gap-2">
+          <TabsList className="grid w-full max-w-md grid-cols-2 mb-8 bg-white border border-orange-100">
+            <TabsTrigger value="products" className="flex items-center gap-2 data-[state=active]:bg-[#D97706] data-[state=active]:text-white">
               <Package className="w-4 h-4" />
               Products
             </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
+            <TabsTrigger value="orders" className="flex items-center gap-2 data-[state=active]:bg-[#D97706] data-[state=active]:text-white">
               <ShoppingBag className="w-4 h-4" />
               Orders
             </TabsTrigger>

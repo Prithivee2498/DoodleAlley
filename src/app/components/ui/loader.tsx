@@ -63,7 +63,7 @@ const StyledWrapper = styled.div`
     display: block;
     height: 100%;
     padding-left: 6px;
-    color: #956afa;
+    color: #D97706;
     animation: spin_4991 4s infinite;
   }
 

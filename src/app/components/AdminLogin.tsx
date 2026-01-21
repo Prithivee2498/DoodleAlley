@@ -51,23 +51,20 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e6dff7] to-[#e0f5ed] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-[#FFFDF9] to-orange-100/30 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-3xl shadow-2xl p-10 border border-orange-100">
           <div className="flex flex-col items-center mb-8">
-            <div
-              className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-              style={{ backgroundColor: '#c7b8ea' }}
-            >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-[#D97706] shadow-lg">
               <Lock className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold">Admin Login</h1>
-            <p className="text-gray-600 mt-2">Doodle Alley Dashboard</p>
+            <h1 className="text-3xl font-bold text-[#1E293B]">Admin Login</h1>
+            <p className="text-[#1E293B]/70 mt-2">Doodle Alley Dashboard</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username" className="text-[#1E293B]">Username</Label>
               <Input
                 id="username"
                 type="text"
@@ -75,12 +72,12 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 placeholder="Enter username"
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-[#1E293B]">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -88,15 +85,14 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter password"
-                className="mt-1"
+                className="mt-1 border-orange-100 focus:border-[#D97706] focus:ring-[#D97706]"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full"
-              style={{ backgroundColor: '#c7b8ea', color: 'white' }}
+              className="w-full bg-[#D97706] text-white hover:bg-[#b45309] shadow-lg"
             >
               {loading ? 'Logging in...' : 'Login'}
             </Button>
@@ -105,13 +101,13 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
           <div className="mt-6 text-center">
             <button
               onClick={onBack}
-              className="text-sm text-gray-600 hover:text-gray-900 underline"
+              className="text-sm text-[#1E293B]/70 hover:text-[#D97706] underline"
             >
               Back to Catalog
             </button>
           </div>
 
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
+          <div className="mt-8 p-4 bg-orange-50/50 rounded-2xl text-sm text-[#1E293B]/80 border border-orange-100">
             <p className="font-semibold mb-1">Default credentials:</p>
             <p>Username: admin</p>
             <p>Password: admin123</p>
