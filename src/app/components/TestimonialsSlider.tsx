@@ -5,27 +5,27 @@ const testimonials = [
   {
     id: 1,
     text: 'Super cute and perfect quality 😍',
-    author: 'Sarah M.',
+    author: 'Megha.',
   },
   {
     id: 2,
     text: 'Delivered on time ✅',
-    author: 'Mike R.',
+    author: 'Karishma.',
   },
   {
     id: 3,
-    text: 'Absolutely love my custom doodle! 💜',
-    author: 'Emma L.',
+    text: 'Beautifully designed and perfectly delivered 💜',
+    author: 'Prithiveeraj.',
   },
   {
     id: 4,
     text: 'Amazing artwork and attention to detail ✨',
-    author: 'James K.',
+    author: 'Ragul Raghunath.',
   },
   {
     id: 5,
     text: 'Best purchase ever! Highly recommend 🌟',
-    author: 'Olivia T.',
+    author: 'Ishitha.',
   },
 ];
 

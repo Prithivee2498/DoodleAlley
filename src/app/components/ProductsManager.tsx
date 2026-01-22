@@ -285,7 +285,7 @@ export function ProductsManager() {
             </div>
 
             <div>
-              <Label htmlFor="price" className="text-[#1E293B]">Price (USD) *</Label>
+              <Label htmlFor="price" className="text-[#1E293B]">Price (INR) *</Label>
               <Input
                 id="price"
                 type="number"

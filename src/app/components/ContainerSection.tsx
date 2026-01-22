@@ -1,4 +1,12 @@
-export default function ContainerSection() {
+
+type View = "catalog" | "about" | "artists";
+
+interface ContainSec {
+  onNavigate: (view:View) =>void;
+}
+
+
+export default function ContainerSection({onNavigate}:ContainSec) {
   return (
     <section className="@container">
               <div className="flex flex-col-reverse md:flex-row gap-8 items-center bg-white dark:bg-[#3d2b1f] rounded-[2.5rem] p-6 md:p-10 shadow-sm border border-[#f0ebe8] dark:border-[#524034]">
@@ -26,17 +34,20 @@ export default function ContainerSection() {
                     </span>
                   </h2>
                   <p className="text-lg text-navy/70 dark:text-gray-300 font-medium max-w-md">
-                    Discover unique doodles, crafts, and stickers from
+                    Discover Handcrafted doodles,Curated crafts,Signature stickers from
                     Doodle Alley.
                   </p>
                   <div className="flex gap-4 mt-2">
-                    <button className="h-12 px-8 rounded-full bg-primary text-navy font-bold hover:shadow-lg hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-2">
+                    <button className="h-12 px-8 rounded-full bg-primary text-navy font-bold hover:shadow-lg hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-2" onClick={() => {
+                    const productsSection = document.getElementById('products-grid');
+                    productsSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}>
                       Explore Shop
                       <span className="material-symbols-outlined text-sm font-bold">
                         arrow_forward
                       </span>
                     </button>
-                    <button className="h-12 px-8 rounded-full bg-white dark:bg-white/5 border border-[#e6e1df] dark:border-white/10 text-navy dark:text-white font-bold hover:bg-background-light dark:hover:bg-white/10 transition-colors">
+                    <button className="h-12 px-8 rounded-full bg-white dark:bg-white/5 border border-[#e6e1df] dark:border-white/10 text-navy dark:text-white font-bold hover:bg-background-light dark:hover:bg-white/10 transition-colors" onClick={() => onNavigate("artists")}>
                       Artists
                     </button>
                   </div>
