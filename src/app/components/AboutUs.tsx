@@ -137,7 +137,7 @@ export function AboutUs({ onBack, onNavigate }: AboutUsProps) {
                 "Polaroid Stands",
                 "Digital Art",
                 "Book Markers",
-                "Pencil Shade"
+                "Devotional Art"
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">
                   <span className="mt-2 h-2 w-2 rounded-full bg-[#D97706]" />
