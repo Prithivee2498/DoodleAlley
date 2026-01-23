@@ -88,7 +88,7 @@ export function OrdersManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-lg">Loading orders...</div>
+        <div className="text-lg text-[#1E293B]">Loading orders...</div>
       </div>
     );
   }
@@ -97,16 +97,15 @@ export function OrdersManager() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Orders</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-[#1E293B]">Orders</h2>
+          <p className="text-sm text-[#1E293B]/70 mt-1">
             Total orders: {orders.length}
           </p>
         </div>
         <Button
           onClick={exportToCSV}
           disabled={orders.length === 0}
-          className="flex items-center gap-2"
-          style={{ backgroundColor: '#b8e6d5', color: '#2d5f4f' }}
+          className="flex items-center gap-2 bg-[#D97706] text-white hover:bg-[#b45309] shadow-md"
         >
           <Download className="w-4 h-4" />
           Export to CSV
@@ -114,27 +113,27 @@ export function OrdersManager() {
       </div>
 
       {orders.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">No orders yet</p>
+        <div className="text-center py-12 bg-white rounded-2xl border border-orange-100">
+          <Package className="w-16 h-16 text-[#1E293B]/20 mx-auto mb-4" />
+          <p className="text-[#1E293B]/60">No orders yet</p>
         </div>
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+              className="bg-white rounded-2xl shadow-sm border border-orange-100 p-6"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Order Info */}
                 <div>
-                  <h3 className="font-semibold text-sm text-gray-500 mb-2">
+                  <h3 className="font-semibold text-sm text-[#D97706] mb-2">
                     ORDER DETAILS
                   </h3>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-[#1E293B]/70 mb-1">
                     Order ID: <span className="font-mono">{order.id}</span>
                   </p>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-[#1E293B]/70 mb-1">
                     Date:{' '}
                     {new Date(order.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -145,8 +144,8 @@ export function OrdersManager() {
                     })}
                   </p>
                   <div className="mt-3">
-                    <p className="font-semibold">{order.productName}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-semibold text-[#1E293B]">{order.productName}</p>
+                    <p className="text-sm text-[#1E293B]/70">
                       ₹{order.productPrice} × {order.quantity} = ₹
                       {order.totalPrice.toFixed(2)}
                     </p>
@@ -155,34 +154,34 @@ export function OrdersManager() {
 
                 {/* Customer Info */}
                 <div>
-                  <h3 className="font-semibold text-sm text-gray-500 mb-2">
+                  <h3 className="font-semibold text-sm text-[#D97706] mb-2">
                     CUSTOMER INFO
                   </h3>
-                  <p className="text-sm mb-1">
+                  <p className="text-sm mb-1 text-[#1E293B]">
                     <span className="font-medium">Name:</span>{' '}
                     {order.customerName}
                   </p>
-                  <p className="text-sm mb-1">
+                  <p className="text-sm mb-1 text-[#1E293B]">
                     <span className="font-medium">Phone:</span>{' '}
                     {order.phoneNumber}
                   </p>
-                  <p className="text-sm">
+                  <p className="text-sm text-[#1E293B]">
                     <span className="font-medium">Address:</span>
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-[#1E293B]/70 mt-1">
                     {order.deliveryAddress}
                   </p>
                 </div>
 
                 {/* Notes */}
                 <div>
-                  <h3 className="font-semibold text-sm text-gray-500 mb-2">
+                  <h3 className="font-semibold text-sm text-[#D97706] mb-2">
                     NOTES
                   </h3>
                   {order.notes ? (
-                    <p className="text-sm text-gray-600">{order.notes}</p>
+                    <p className="text-sm text-[#1E293B]/70">{order.notes}</p>
                   ) : (
-                    <p className="text-sm text-gray-400 italic">No notes</p>
+                    <p className="text-sm text-[#1E293B]/40 italic">No notes</p>
                   )}
                 </div>
               </div>

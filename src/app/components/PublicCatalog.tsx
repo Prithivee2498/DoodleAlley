@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Search, Filter } from 'lucide-react';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import  Loader  from '@/app/components/ui/loader';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
-import { projectId, publicAnonKey } from '/utils/supabase/info';
-import  MainLogo  from '../../assets/mainlogo';
+import { useState, useEffect } from "react";
+import Loader from "@/app/components/ui/loader";
+import NavSection from "./NavSection";
+import ContainerSection from "./ContainerSection";
+import { projectId, publicAnonKey } from "/utils/supabase/info";
 
 interface Product {
   id: string;
@@ -19,22 +16,33 @@ interface Product {
   updatedAt: string;
 }
 
+type View = "catalog" | "about" | "artists";
+
 interface PublicCatalogProps {
   onViewProduct: (productId: string) => void;
   onPlaceOrder: (productId: string) => void;
+  onNavigate: (view: View) => void;
 }
 
-export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProps) {
+export function PublicCatalog({
+  onViewProduct,
+  onPlaceOrder,
+  onNavigate,
+}: PublicCatalogProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
   }, []);
+  useEffect(() => {
+    if (searchQuery === "") setShowSearch(false);
+  }, [searchQuery]);
 
   useEffect(() => {
     filterProducts();
@@ -48,19 +56,21 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
           headers: {
             Authorization: `Bearer ${publicAnonKey}`,
           },
-        }
+        },
       );
       const data = await response.json();
-      const activeProducts = (data.products || []).filter((p: Product) => p.isActive);
+      const activeProducts = (data.products || []).filter(
+        (p: Product) => p.isActive,
+      );
       setProducts(activeProducts);
 
       // Extract unique categories
       const uniqueCategories = Array.from(
-        new Set(activeProducts.map((p: Product) => p.category).filter(Boolean))
+        new Set(activeProducts.map((p: Product) => p.category).filter(Boolean)),
       ) as string[];
       setCategories(uniqueCategories);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
@@ -70,7 +80,7 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
     let filtered = [...products];
 
     // Filter by category
-    if (selectedCategory !== 'all') {
+    if (selectedCategory !== "all") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
@@ -80,7 +90,7 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
       filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query)
+          p.description.toLowerCase().includes(query),
       );
     }
 
@@ -89,140 +99,136 @@ export function PublicCatalog({ onViewProduct, onPlaceOrder }: PublicCatalogProp
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-[#FFFDF9]">
         <Loader />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#fffdf9]">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-[#fffdf9] sticky top-0 z-10" style={{display:'flex'}}>
-      <MainLogo />
-    
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
-          <h1
-            className="text-5xl font-bold mb-3 tracking-tight text-[#2c3e50] font-display"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Doodle Alley
-          </h1>
-          <p className="text-gray-500 font-sans tracking-wide text-lg">
-            Handcrafted art & doodles with love
-          </p>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search and Filter Bar */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="Search artworks..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 w-full border-gray-300 focus:border-[#c7b8ea] focus:ring-[#c7b8ea]"
-            />
-          </div>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full md:w-48 border-gray-300">
-              <Filter className="w-4 h-4 mr-2" />
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Products Grid */}
-        {filteredProducts.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-lg" style={{ color: '#2C3E50' }}>No artworks found</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="group rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border"
-              style={{ backgroundColor: '#FFFDF9', borderColor: '#FFDAB9' }}
-            >
-              {/* Product Image */}
-              <div className="aspect-square overflow-hidden" style={{ backgroundColor: '#FFDAB9' }}>
-                {product.images && product.images.length > 0 ? (
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ color: '#2C3E50' }}>
-                    No Image
-                  </div>
-                )}
-              </div>
-
-                {/* Product Info */}
-                <div className="p-5">
-                  <div className="mb-3">
-                    {product.category ? (
-                      <span
-                        className="text-xs font-medium px-2 py-1 rounded-full"
-                        style={{ backgroundColor: '#ffdab9', color: '#2c3e50' }}
-                      >
-                        {product.category}
-                      </span>
-                    ): <span className="text-xs font-medium px-2 py-1 rounded-full" style={{ backgroundColor: '#FFDAB9', color: '#2C3E50' }}>Uncategorized</span>}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#2C3E50' }}>{product.name}</h3>
-                <p className="text-sm mb-3 line-clamp-2" style={{ color: '#2C3E50' }}>
-                  {product.description}
-                </p>
-                <p className="text-2xl font-bold mb-4" style={{ color: '#2C3E50' }}>
-                  ₹{product.price}
-                </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button
-                    onClick={() => onViewProduct(product.id)}
-                    variant="outline"
-                    className="flex-1"
-                    style={{
-                      borderColor: '#FFDAB9',
-                      color: '#2C3E50',
-                      backgroundColor: '#FFFDF9',
-                    }}
-                  >
-                      View
-                    </Button>
-                     <Button
-                    onClick={() => onPlaceOrder(product.id)}
-                    className="flex-1"
-                    style={{
-                      backgroundColor: '#FFDAB9',
-                      color: '#2C3E50',
-                      border: '1px solid #FFDAB9',
-                    }}
-                  >
-                      Place Order
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
+    <>
+      <body className="bg-background-light dark:bg-background-dark text-navy dark:text-gray-100 font-display min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-navy">
+        {/* Floating Nav */}
+        <NavSection
+          onNavigate={onNavigate}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          showSearch={true}
+        />
+        {showSearch && (
+          <div className="fixed top-24 left-0 right-0 z-50 flex justify-center px-4">
+            <div className="w-full max-w-[960px] bg-white dark:bg-[#3d2b1f] border border-[#e6e1df] dark:border-[#524034] shadow-lg rounded-2xl px-4 py-3">
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search artworks..."
+                className="w-full bg-transparent outline-none text-navy dark:text-white font-semibold"
+              />
+            </div>
           </div>
         )}
-      </div>
-    </div>
+        <main className="flex-grow pt-28 pb-10 px-4 md:px-10 lg:px-40 flex justify-center w-full">
+          <div className="w-full max-w-[1024px] flex flex-col gap-12">
+            {/* House Card */}
+            <ContainerSection onNavigate={onNavigate} />
+            <section>
+              {/* Category */}
+              <div
+                className="flex items-center justify-between px-2 mb-6"
+                id="products-grid"
+              >
+                <h3 className="text-2xl font-bold text-navy dark:text-white flex items-center gap-2">
+                  Browse by Category
+                  <span className="material-symbols-outlined text-primary rotate-12">
+                    auto_awesome
+                  </span>
+                </h3>
+                <button
+                 className="text-xs sm:text-sm font-semibold text-primary hover:text-navy transition-colors"
+                  onClick={() => setSelectedCategory("all")}
+                >
+                  View all
+                </button>
+              </div>
+              {/* Product List */}
+              <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 px-2 -mx-2 snap-x">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    value={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className="snap-start shrink-0 flex items-center gap-3 pl-2 pr-6 py-2 bg-white dark:bg-[#3d2b1f] border border-gray-100 dark:border-[#524034] rounded-full shadow-sm hover:shadow-md hover:border-primary transition-all group"
+                  >
+                    <span className="font-bold text-navy dark:text-white">
+                      {cat}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+            {/* Card Section */}
+            <section>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+                {filteredProducts.length === 0 ? (
+                  <p className="text-center col-span-full text-navy/70 dark:text-gray-300">
+                    No Art works Listed
+                  </p>
+                ) : (
+                  filteredProducts.map((prod) => (
+                    <div
+                      key={prod.id}
+                      className="group relative flex flex-col gap-3 p-3 bg-white dark:bg-[#3d2b1f] rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-[#524034] transition-all duration-300 hover:-translate-y-2 hover:-rotate-1"
+                    >
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-primary/30 -rotate-3 z-10 backdrop-blur-sm opacity-60" />
+
+                      <div className="aspect-[4/5] w-full overflow-hidden rounded-xl bg-gray-100 relative">
+                        {prod.images?.length ? (
+                          <img
+                            src={prod.images[0]}
+                            alt={prod.name}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[#1E293B]/40">
+                            No Image
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col gap-1 px-1">
+                        <h4 className="font-bold text-navy dark:text-white line-clamp-1">
+                          {prod.name}
+                        </h4>
+                        <p className="text-sm text-navy/70 dark:text-gray-300 line-clamp-2">
+                          {prod.description}
+                        </p>
+                        <p className="font-extrabold text-navy dark:text-white">
+                          ₹{prod.price}
+                        </p>
+                      </div>
+
+                      <div className="mt-2 flex gap-2">
+                        <button
+                          onClick={() => onViewProduct(prod.id)}
+                          className="h-10 px-4 rounded-full bg-white dark:bg-white/5 border border-[#e6e1df] dark:border-white/10 text-navy dark:text-white font-bold hover:bg-background-light dark:hover:bg-white/10 transition-colors flex-1"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => onPlaceOrder(prod.id)}
+                          className="h-10 px-4 rounded-full bg-primary text-navy font-bold hover:bg-primary/80 transition-colors flex-1"
+                        >
+                          Order
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+          </div>
+        </main>
+      </body>
+    </>
   );
 }

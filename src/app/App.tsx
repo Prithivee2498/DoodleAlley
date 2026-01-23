@@ -1,72 +1,87 @@
-import { useState, useEffect } from 'react';
-import { PublicCatalog } from '@/app/components/PublicCatalog';
-import { ProductDetail } from '@/app/components/ProductDetail';
-import { OrderForm } from '@/app/components/OrderForm';
-import { TestimonialsSlider } from '@/app/components/TestimonialsSlider';
-import { AdminLogin } from '@/app/components/AdminLogin';
-import { AdminDashboard } from '@/app/components/AdminDashboard';
-import { Button } from '@/app/components/ui/button';
-import { Lock } from 'lucide-react';
-import { Toaster } from '@/app/components/ui/sonner';
+import { useState, useEffect } from "react";
+import { PublicCatalog } from "@/app/components/PublicCatalog";
+import { AboutUs } from "./components/AboutUs";
+import {OurMakers} from './components/AboutArtist';
+import { ProductDetail } from "@/app/components/ProductDetail";
+import { OrderForm } from "@/app/components/OrderForm";
+import { TestimonialsSlider } from "@/app/components/TestimonialsSlider";
+import { AdminLogin } from "@/app/components/AdminLogin";
+import { AdminDashboard } from "@/app/components/AdminDashboard";
+import { Button } from "@/app/components/ui/button";
+import { Lock } from "lucide-react";
+import { Toaster } from "@/app/components/ui/sonner";
 
-type View = 'catalog' | 'product-detail' | 'order-form' | 'admin-login' | 'admin-dashboard';
+type View =
+  | "catalog"
+  | "about"
+  | "artists"
+  | "product-detail"
+  | "order-form"
+  | "admin-login"
+  | "admin-dashboard";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<View>('catalog');
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<View>("catalog");
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null,
+  );
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  const handleNavigate = (view: "catalog" | "about" | "artists") => {
+    setCurrentView(view);
+  };
 
   useEffect(() => {
     // Check if admin is already logged in
-    const adminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+    const adminLoggedIn = localStorage.getItem("adminLoggedIn") === "true";
     setIsAdminLoggedIn(adminLoggedIn);
   }, []);
 
   const handleViewProduct = (productId: string) => {
     setSelectedProductId(productId);
-    setCurrentView('product-detail');
+    setCurrentView("product-detail");
   };
 
   const handlePlaceOrder = (productId: string) => {
     setSelectedProductId(productId);
-    setCurrentView('order-form');
+    setCurrentView("order-form");
   };
 
   const handleBackToCatalog = () => {
     setSelectedProductId(null);
-    setCurrentView('catalog');
+    setCurrentView("catalog");
   };
 
   const handleAdminLogin = () => {
-    setCurrentView('admin-login');
+    setCurrentView("admin-login");
   };
 
   const handleAdminLoginSuccess = () => {
     setIsAdminLoggedIn(true);
-    setCurrentView('admin-dashboard');
+    setCurrentView("admin-dashboard");
   };
 
   const handleAdminLogout = () => {
     setIsAdminLoggedIn(false);
-    setCurrentView('catalog');
+    setCurrentView("catalog");
   };
 
   return (
     <>
-      {currentView === 'catalog' && (
+      {currentView === "catalog" && (
         <>
           <PublicCatalog
             onViewProduct={handleViewProduct}
             onPlaceOrder={handlePlaceOrder}
+            onNavigate={handleNavigate}
           />
           <TestimonialsSlider />
-          
+
           {/* Admin Access Button */}
           <div className="fixed bottom-6 right-6 z-50">
             <Button
               onClick={handleAdminLogin}
-              className="rounded-full shadow-lg"
-              style={{ backgroundColor: '#c7b8ea', color: 'white' }}
+              className="rounded-full shadow-2xl bg-[#D97706] text-white hover:bg-[#b45309] hover:scale-110 transition-all"
               size="lg"
             >
               <Lock className="w-5 h-5 mr-2" />
@@ -76,7 +91,15 @@ export default function App() {
         </>
       )}
 
-      {currentView === 'product-detail' && selectedProductId && (
+      {currentView === "about" && (
+        <AboutUs onBack={handleBackToCatalog} onNavigate={handleNavigate} />
+      )}
+
+      {currentView === 'artists' && (
+  <OurMakers onBack={handleBackToCatalog} onNavigate={handleNavigate} />
+)}
+
+      {currentView === "product-detail" && selectedProductId && (
         <ProductDetail
           productId={selectedProductId}
           onBack={handleBackToCatalog}
@@ -84,25 +107,22 @@ export default function App() {
         />
       )}
 
-      {currentView === 'order-form' && selectedProductId && (
-        <OrderForm
-          productId={selectedProductId}
-          onBack={handleBackToCatalog}
-        />
+      {currentView === "order-form" && selectedProductId && (
+        <OrderForm productId={selectedProductId} onBack={handleBackToCatalog} />
       )}
 
-      {currentView === 'admin-login' && (
+      {currentView === "admin-login" && (
         <AdminLogin
           onLoginSuccess={handleAdminLoginSuccess}
           onBack={handleBackToCatalog}
         />
       )}
 
-      {currentView === 'admin-dashboard' && isAdminLoggedIn && (
+      {currentView === "admin-dashboard" && isAdminLoggedIn && (
         <AdminDashboard onLogout={handleAdminLogout} />
       )}
 
-      <Toaster position="top-right" style={{ fontFamily: 'Spline Sans, sans-serif', color: 'var(--navy)' }} />
+      <Toaster position="top-right" />
     </>
   );
 }

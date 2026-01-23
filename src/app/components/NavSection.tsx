@@ -1,0 +1,131 @@
+import React, { useState, useEffect, useRef } from "react";
+import MainLogo from "../../assets/mainlogo";
+
+type View = "catalog" | "about" | "artists";
+interface NavProps {
+  onNavigate: (view: View) => void;
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+  showSearch?: boolean;
+}
+
+export default function NavSection({
+  onNavigate,
+  searchQuery,
+  onSearchChange,
+  showSearch = false,
+}: NavProps) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const [open, setOpen] = React.useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
+  return (
+    <nav className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+      <div className="flex items-center justify-between w-full max-w-[960px] bg-white/90 dark:bg-[#3d2b1f]/90 backdrop-blur-md border border-[#e6e1df] dark:border-[#524034] shadow-lg rounded-full px-6 py-3 transition-all">
+        <button
+          className="flex items-center gap-4 group"
+          onClick={() => onNavigate("catalog")}
+        >
+          <div className="size-8 text-navy dark:text-primary transition-transform group-hover:rotate-[-12deg]">
+            <MainLogo />
+          </div>
+          <h1 className="text-lg font-bold tracking-tight hidden sm:block">
+            Doodle Alley
+          </h1>
+        </button>
+        <div className="flex flex-1 items-center justify-center md:justify-start px-3 md:px-6 gap-3 md:gap-6 flex-wrap">
+          {/* Links always visible */}
+          <div className="flex items-center gap-8">
+            <button
+              className="text-sm font-semibold hover:text-primary transition-colors"
+              onClick={() => onNavigate("artists")}
+            >
+              Our Makers
+            </button>
+
+            <button
+              className="text-sm font-semibold hover:text-primary transition-colors"
+              onClick={() => onNavigate("about")}
+            >
+              About
+            </button>
+          </div>
+
+          {mobileMenu && (
+            <div className="md:hidden fixed top-20 left-0 right-0 z-50 px-4">
+              <div className="mx-auto max-w-[960px] bg-white/95 dark:bg-[#3d2b1f]/95 backdrop-blur-md border border-[#e6e1df] dark:border-[#524034] shadow-lg rounded-2xl p-3">
+                <button
+                  className="w-full text-left px-4 py-3 rounded-xl font-semibold hover:bg-orange-50 dark:hover:bg-white/10"
+                  onClick={() => {
+                    onNavigate("artists");
+                    setMobileMenu(false);
+                  }}
+                >
+                  Our Makers
+                </button>
+                <button
+                  className="w-full text-left px-4 py-3 rounded-xl font-semibold hover:bg-orange-50 dark:hover:bg-white/10"
+                  onClick={() => {
+                    onNavigate("about");
+                    setMobileMenu(false);
+                  }}
+                >
+                  About
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Search appears only when open */}
+          {showSearch && open && (
+            <div className="w-full max-w-[320px] flex items-center gap-2 bg-white/70 dark:bg-white/10 border border-[#e6e1df] dark:border-white/10 rounded-full px-3 py-2">
+              <span className="material-symbols-outlined text-[18px] opacity-70">
+                search
+              </span>
+
+              <input
+                ref={inputRef}
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                placeholder="Search artworks..."
+                className="w-full bg-transparent outline-none text-sm font-semibold text-navy dark:text-white placeholder:text-navy/40 dark:placeholder:text-white/40"
+              />
+
+              <button
+                type="button"
+                onClick={() => {
+                  onSearchChange("");
+                  setOpen(false);
+                }}
+                className="flex items-center justify-center size-8 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                aria-label="Close search"
+              >
+                <span className="material-symbols-outlined text-[18px]">
+                  close
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {showSearch && (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="flex items-center justify-center size-10 rounded-full hover:bg-background-light dark:hover:bg-white/10 transition-colors"
+              aria-label="Search"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                search
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}
