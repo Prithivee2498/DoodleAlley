@@ -96,7 +96,7 @@ export function OrderForm({ productId, onBack }: OrderFormProps) {
 
       // Open Instagram DM
       // Note: Replace 'doodlealley' with your actual Instagram username
-      const instagramUsername = 'doodlealley';
+      const instagramUsername = 'doodle.alley';
       
       // Try Instagram app deep link first, fallback to web
       const instagramAppLink = `instagram://user?username=${instagramUsername}`;
