@@ -142,12 +142,14 @@ export function OurMakers({ onBack, onNavigate }: OurMakersProps) {
             >
               Explore Our Work →
             </Button>
+            <a href={"https://instagram.com/doodle.alley"} target="_blank" rel="noopener noreferrer">
             <Button
               variant="outline"
               className="border-orange-200 text-[#1E293B] hover:bg-orange-50 px-8 py-6 text-lg rounded-full"
             >
               Get in Touch
             </Button>
+            </a>
           </div>
         </div>
       </div>
