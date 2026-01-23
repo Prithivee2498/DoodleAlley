@@ -144,7 +144,7 @@ export function PublicCatalog({
                   </span>
                 </h3>
                 <button
-                  className="text-sm font-semibold text-primary hover:text-navy transition-colors hidden sm:block"
+                 className="text-xs sm:text-sm font-semibold text-primary hover:text-navy transition-colors"
                   onClick={() => setSelectedCategory("all")}
                 >
                   View all
