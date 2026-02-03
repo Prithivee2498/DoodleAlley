@@ -56,7 +56,6 @@ export function TestimonialsSlider() {
         <h2 className="text-3xl font-bold text-center mb-12 text-[#1E293B]">
           What Our Customers Say
         </h2>
-        
         <div className="relative">
           <div className="flex items-center justify-center gap-4">
             <button

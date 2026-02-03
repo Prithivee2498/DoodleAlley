@@ -106,12 +106,6 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
               Back to Catalog
             </button>
           </div>
-
-          <div className="mt-8 p-4 bg-orange-50/50 rounded-2xl text-sm text-[#1E293B]/80 border border-orange-100">
-            <p className="font-semibold mb-1">Default credentials:</p>
-            <p>Username: admin</p>
-            <p>Password: admin123</p>
-          </div>
         </div>
       </div>
     </div>
