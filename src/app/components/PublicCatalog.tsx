@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Loader from "@/app/components/ui/loader";
 import NavSection from "./NavSection";
 import ContainerSection from "./ContainerSection";
@@ -29,6 +29,7 @@ export function PublicCatalog({
   onPlaceOrder,
   onNavigate,
 }: PublicCatalogProps) {
+  const catalogRef = useRef<HTMLDivElement | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,6 +42,10 @@ export function PublicCatalog({
     fetchProducts();
   }, []);
   useEffect(() => {
+    if (searchQuery.trim() && catalogRef.current) {
+      catalogRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     if (searchQuery === "") setShowSearch(false);
   }, [searchQuery]);
 
@@ -144,7 +149,7 @@ export function PublicCatalog({
                   </span>
                 </h3>
                 <button
-                 className="text-xs sm:text-sm font-semibold text-primary hover:text-navy transition-colors"
+                  className="text-xs sm:text-sm font-semibold text-primary hover:text-navy transition-colors"
                   onClick={() => setSelectedCategory("all")}
                 >
                   View all
@@ -167,7 +172,7 @@ export function PublicCatalog({
               </div>
             </section>
             {/* Card Section */}
-            <section>
+            <section ref={catalogRef}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
                 {filteredProducts.length === 0 ? (
                   <p className="text-center col-span-full text-navy/70 dark:text-gray-300">
@@ -182,12 +187,18 @@ export function PublicCatalog({
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-primary/30 -rotate-3 z-10 backdrop-blur-sm opacity-60" />
 
                       <div className="aspect-[4/5] w-full overflow-hidden rounded-xl bg-gray-100 relative">
-                        {prod.images?.length ? (
-                          <img
-                            src={prod.images[0]}
-                            alt={prod.name}
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
+                        {prod.images?.length > 0 ? (
+                          <div className="flex w-full h-full overflow-x-auto no-scrollbar gap-2">
+                            {prod.images.map((imgUrl, idx) => (
+                              <img
+                                key={idx}
+                                src={imgUrl}
+                                alt={`${prod.name}-${idx}`}
+                                className="object-cover flex-shrink-0 w-full h-full rounded-xl"
+                                style={{ minWidth: "100%" }}
+                              />
+                            ))}
+                          </div>
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[#1E293B]/40">
                             No Image
@@ -224,6 +235,13 @@ export function PublicCatalog({
                     </div>
                   ))
                 )}
+              </div>
+            </section>
+            <section>
+              <div className="mt-4 space-y-4 text-[#1E293B]/70 leading-relaxed text-center font-bold">
+                <p>
+                  We offer large-order options for art pieces and curated hampers.
+                </p>
               </div>
             </section>
           </div>

@@ -36,8 +36,8 @@ app.post("/make-server-0dc0a659/admin/login", async (c) => {
     
     // If no admin exists, create default admin (admin/admin123)
     if (!adminCreds) {
-      await kv.set("admin:credentials", { username: "admin", password: "admin123" });
-      if (username === "admin" && password === "admin123") {
+      await kv.set("admin:credentials", { username: "admin", password: "Honey@2908" });
+      if (username === "admin" && password === "Honey@2908") {
         return c.json({ success: true, message: "Login successful" });
       }
     } else {
@@ -134,10 +134,43 @@ app.put("/make-server-0dc0a659/products/:id", async (c) => {
 app.delete("/make-server-0dc0a659/products/:id", async (c) => {
   try {
     const id = c.req.param("id");
+
+    // Step 1: Load product from KV
+    const product = await kv.get(`product:${id}`);
+    if (!product) {
+      return c.json({ error: "Product not found" }, 404);
+    }
+
+    // Step 2: Delete images from Supabase Storage
+    if (Array.isArray(product.images)) {
+      const supabase = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")! // required to delete images
+      );
+
+      const imagePaths = product.images
+        .map((url: string) => url.split("/product-images/")[1])
+        .filter(Boolean); // remove undefined/null
+
+      if (imagePaths.length > 0) {
+        const { error: storageError } = await supabase
+          .storage
+          .from("product-images")
+          .remove(imagePaths);
+
+        if (storageError) {
+          console.error("Failed to delete images:", storageError);
+          return c.json({ error: "Failed to delete images" }, 500);
+        }
+      }
+    }
+
+    // Step 3: Delete product from KV
     await kv.del(`product:${id}`);
+
     return c.json({ success: true });
   } catch (error) {
-    console.log("Error deleting product:", error);
+    console.error("Error deleting product:", error);
     return c.json({ error: "Failed to delete product" }, 500);
   }
 });

@@ -2,6 +2,7 @@ import { ArrowLeft, Instagram, Mail } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import NavSection from "./NavSection";
+import Artistimage from "../../assets/Artistimage.jpg"
 
 interface OurMakersProps {
   onBack: () => void;
@@ -15,8 +16,7 @@ const artists = [
     role: "Lead Artist & Founder",
     specialty: "Architect & Artist",
     bio: "At the heart of Doodle Alley is Hamsa M R—a qualified architect and a passionate artist who chose to follow her creative calling.With a simple dream of building an art-focused brand and the courage to believe in her vision, Hamsa began this journey with just one sale. What followed was not overnight success, but consistency, resilience, and an unwavering love for art. Today, Doodle Alley stands as a growing creative venture powered by passion rather than shortcuts.Her vision goes beyond personal success. She dreams of bringing art into the mainstream, making it accessible, valued, and celebrated—while also creating opportunities for artists with hidden talent. Doodle Alley aims to become a platform where creativity finds recognition and artists find employment, confidence, and purpose.“When passion meets patience, art turns into a legacy.”Through Doodle Alley, Hamsa continues to create, inspire, and build—one artwork, one story, and one dream at a time..",
-    imageUrl:
-      "https://images.unsplash.com/photo-1600783486675-b0690b0967ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMGFydGlzdCUyMHBvcnRyYWl0fGVufDF8fHx8MTc2OTAyODgxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+    image:Artistimage,
     instagram: "@doodle.alley",
     email: "hamsamrdesign@gmail.com",
   },
@@ -70,7 +70,7 @@ export function OurMakers({ onBack, onNavigate }: OurMakersProps) {
                 <div className={`${index % 2 === 0 ? "" : "md:col-start-2"}`}>
                   <div className="aspect-square overflow-hidden">
                     <ImageWithFallback
-                      src={artist.imageUrl}
+                      src={artist.image}
                       alt={artist.name}
                       className="w-full h-full object-cover"
                     />
